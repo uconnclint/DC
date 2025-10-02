@@ -1,0 +1,19 @@
+{
+  "name": "digital-city",
+  "version": "0.1.0",
+  "description": "Digital City: Grade 3 digital citizenship adventure built with Phaser 3 and Vite.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "phaser": "^3.70.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.17",
+    "typescript": "^5.4.2",
+    "vite": "^5.1.4"
+  }
+}

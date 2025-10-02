@@ -1,0 +1,42 @@
+[
+  {
+    "id": "fp_001",
+    "objective": "digital_footprint",
+    "stem": "What is a digital footprint?",
+    "choices": ["Marks left by your shoes", "Information about you online"],
+    "answer": 1,
+    "rationale": "Your digital footprint is the trail of information you leave on the internet.",
+    "tags": ["Footprint", "easy"],
+    "voiceover": "fp_001.mp3"
+  },
+  {
+    "id": "fp_002",
+    "objective": "digital_footprint",
+    "stem": "Which is the best clue that a website is reliable?",
+    "choices": ["It uses lots of emojis", "It lists an author and trusted sources"],
+    "answer": 1,
+    "rationale": "Reliable sites share who made it and where facts come from.",
+    "tags": ["Footprint", "medium"],
+    "voiceover": "fp_002.mp3"
+  },
+  {
+    "id": "fp_003",
+    "objective": "digital_footprint",
+    "stem": "Before posting a silly photo of a friend, what should you do?",
+    "choices": ["Post it anyway", "Ask if it's okay to share"],
+    "answer": 1,
+    "rationale": "Always ask before sharing someone else's photo online.",
+    "tags": ["Footprint", "easy"],
+    "voiceover": "fp_003.mp3"
+  },
+  {
+    "id": "fp_004",
+    "objective": "digital_footprint",
+    "stem": "What can ads on a website tell you?",
+    "choices": ["The page is definitely true", "Someone paid to get your attention"],
+    "answer": 1,
+    "rationale": "Ads mean someone is paying to show you something and may want you to click.",
+    "tags": ["Footprint", "medium"],
+    "voiceover": "fp_004.mp3"
+  }
+]

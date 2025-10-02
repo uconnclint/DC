@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ppi_001",
+    "objective": "personal_private",
+    "stem": "Is your first name personal or private?",
+    "choices": ["Personal", "Private"],
+    "answer": 0,
+    "rationale": "First names are okay to share at school, but home addresses stay private.",
+    "tags": ["PPI", "easy"],
+    "voiceover": "ppi_001.mp3"
+  },
+  {
+    "id": "ppi_002",
+    "objective": "personal_private",
+    "stem": "Should you share your password with a friend?",
+    "choices": ["Yes, best friends share", "No, keep it secret"],
+    "answer": 1,
+    "rationale": "Passwords are private and should only be known by you and a trusted adult.",
+    "tags": ["PPI", "medium"],
+    "voiceover": "ppi_002.mp3"
+  },
+  {
+    "id": "ppi_003",
+    "objective": "personal_private",
+    "stem": "Is your favorite snack personal or private?",
+    "choices": ["Personal", "Private"],
+    "answer": 0,
+    "rationale": "Likes and favorites are personal and okay to share.",
+    "tags": ["PPI", "easy"],
+    "voiceover": "ppi_003.mp3"
+  },
+  {
+    "id": "ppi_004",
+    "objective": "personal_private",
+    "stem": "What should you do if a pop-up asks for your home address?",
+    "choices": ["Type it in quickly", "Close the pop-up"],
+    "answer": 1,
+    "rationale": "Home address is private. Close pop-ups that ask for it.",
+    "tags": ["PPI", "hard"],
+    "voiceover": "ppi_004.mp3"
+  }
+]
