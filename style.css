@@ -6,3 +6,7 @@ body {
     height: 100vh;
     margin: 0;
 }
+
+#game-container {
+    position: relative;
+}
