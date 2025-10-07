@@ -27,7 +27,8 @@ class OpeningScene extends Phaser.Scene {
         }).setOrigin(0.5, 0).setX(400);
 
         // Add a click event to proceed
-        this.input.on('pointerdown', () => {
+        const clickZone = this.add.zone(400, 300, 800, 600).setInteractive();
+        clickZone.on('pointerdown', () => {
             this.scene.start('SafetyDistrict');
         });
     }
