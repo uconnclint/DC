@@ -88,6 +88,9 @@ class PasswordPuzzle extends Phaser.Scene {
     }
 
     create() {
+        this.puzzleState = 'CREATING'; // CREATING, REMEMBERING, RETYPING
+        this.strongPassword = '';
+
         this.cameras.main.setBackgroundColor('#330033');
         this.add.text(400, 50, 'Password Puzzle', { fontSize: '32px', fill: '#fff' }).setOrigin(0.5);
 
@@ -109,18 +112,67 @@ class PasswordPuzzle extends Phaser.Scene {
         const feedbackText = this.add.text(400, 350, instructionText, { fontSize: '18px', fill: '#fff', align: 'center', wordWrap: { width: 600 } }).setOrigin(0.5);
 
         checkButton.on('pointerdown', () => {
-            const passwordText = passwordInput.value;
-            const isStrong = passwordText.length >= 8 && /\d/.test(passwordText) && /[!@#$%^&*()]/.test(passwordText);
-            const isUnchanged = passwordText === this.currentScenario.password;
+            if (this.puzzleState === 'CREATING') {
+                const passwordText = passwordInput.value;
+                const isStrong = passwordText.length >= 8 && /\d/.test(passwordText) && /[!@#$%^&*()]/.test(passwordText);
+                const isUnchanged = passwordText === this.currentScenario.password;
 
-            if (isUnchanged) {
-                feedbackText.setText('You need to add to the password to make it stronger!');
-            } else if (isStrong) {
-                feedbackText.setText('Great job! That\'s a strong password!');
-                inputElement.setVisible(false);
-                this.time.delayedCall(2000, () => this.scene.start('SafetyDistrict'));
-            } else {
-                feedbackText.setText('Try making the password longer and include numbers and symbols.');
+                if (isUnchanged) {
+                    feedbackText.setText('You need to add to the password to make it stronger!');
+                } else if (isStrong) {
+                    this.strongPassword = passwordText;
+                    this.puzzleState = 'REMEMBERING';
+                    feedbackText.setText('Great job! That\'s a strong password!');
+
+                    // Hide elements and start the countdown
+                    passwordInput.value = '';
+                    inputElement.setVisible(false);
+                    checkButton.setVisible(false);
+                    resetButton.setVisible(false);
+
+                    this.time.delayedCall(1500, () => {
+                        feedbackText.setText("Let's see how well you can remember it!");
+                        let countdown = 10;
+                        const countdownText = this.add.text(400, 300, countdown, { fontSize: '48px', fill: '#fff' }).setOrigin(0.5);
+
+                        const timer = this.time.addEvent({
+                            delay: 1000,
+                            callback: () => {
+                                countdown--;
+                                countdownText.setText(countdown);
+                                if (countdown === 0) {
+                                    timer.remove();
+                                    countdownText.destroy();
+
+                                    // Start the re-typing phase
+                                    this.puzzleState = 'RETYPING';
+                                    feedbackText.setText('Time\'s up! Now, re-type your password to see if you remember it.');
+                                    inputElement.setVisible(true);
+                                    checkButton.setVisible(true);
+                                }
+                            },
+                            callbackScope: this,
+                            loop: true
+                        });
+                    });
+                } else {
+                    feedbackText.setText('Try making the password longer and include numbers and symbols.');
+                }
+            } else if (this.puzzleState === 'RETYPING') {
+                const retypedPassword = passwordInput.value;
+                if (retypedPassword === this.strongPassword) {
+                    feedbackText.setText('You remembered it perfectly! Great job!');
+                    inputElement.setVisible(false);
+                    checkButton.setVisible(false);
+                    resetButton.setVisible(false);
+                    this.time.delayedCall(2000, () => this.scene.start('SafetyDistrict'));
+                } else {
+                    feedbackText.setText('Not quite! A good password should be easy to remember.\nLet\'s try another one.');
+                    inputElement.setVisible(false);
+                    checkButton.setVisible(false);
+                    resetButton.setVisible(false);
+                    this.time.delayedCall(3000, () => this.scene.restart());
+                }
             }
         });
 
