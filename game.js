@@ -77,31 +77,44 @@ class PasswordPuzzle extends Phaser.Scene {
         super({ key: 'PasswordPuzzle' });
     }
 
+    init() {
+        this.scenarios = [
+            { character: 'Billy', context: 'Xbox', password: 'coolbilly' },
+            { character: 'Maria', context: 'email', password: 'password' },
+            { character: 'Jamal', context: 'favorite game', password: 'jamal123' },
+            { character: 'Chloe', context: 'tablet', password: 'chloe' }
+        ];
+        this.currentScenario = Phaser.Utils.Array.GetRandom(this.scenarios);
+    }
+
     create() {
         this.cameras.main.setBackgroundColor('#330033');
         this.add.text(400, 50, 'Password Puzzle', { fontSize: '32px', fill: '#fff' }).setOrigin(0.5);
 
-        // Placeholder for RoboBob
-        const roboBob = this.add.rectangle(150, 250, 100, 150, 0xcccccc);
-        this.add.text(150, 175, 'RoboBob', { fontSize: '24px', fill: '#fff' }).setOrigin(0.5);
+        // Placeholder for a generic character
+        const character = this.add.rectangle(150, 250, 100, 150, 0xcccccc);
+        this.add.text(150, 175, this.currentScenario.character, { fontSize: '24px', fill: '#fff' }).setOrigin(0.5);
 
-        // Add HTML input element
-        const inputElement = this.add.dom(450, 250).createFromHTML('<input type="password" id="password-input" style="width: 280px; height: 30px; font-size: 20px;">');
+        // Add HTML input element, pre-filled with the weak password
+        const initialPassword = this.currentScenario.password;
+        const inputHTML = `<input type="text" id="password-input" value="${initialPassword}" style="width: 280px; height: 30px; font-size: 20px;">`;
+        const inputElement = this.add.dom(450, 250).createFromHTML(inputHTML);
         const passwordInput = inputElement.node.querySelector('#password-input');
 
         // Check password button
         const checkButton = this.add.rectangle(450, 550, 150, 50, 0x00ff00).setInteractive();
         this.add.text(450, 550, 'Check', { fontSize: '24px', fill: '#000' }).setOrigin(0.5);
-        const feedbackText = this.add.text(400, 350, 'Help RoboBob make a strong password!\n(You can type with your keyboard)', { fontSize: '18px', fill: '#fff', align: 'center' }).setOrigin(0.5);
+
+        const instructionText = `${this.currentScenario.character}'s ${this.currentScenario.context} password is "${this.currentScenario.password}".\nIt isn't secure enough. Help make it stronger!`;
+        const feedbackText = this.add.text(400, 350, instructionText, { fontSize: '18px', fill: '#fff', align: 'center', wordWrap: { width: 600 } }).setOrigin(0.5);
 
         checkButton.on('pointerdown', () => {
             const passwordText = passwordInput.value;
             const isStrong = passwordText.length >= 8 && /\d/.test(passwordText) && /[!@#$%^&*()]/.test(passwordText);
-            const isWeak = passwordText.toLowerCase() === 'password123';
+            const isUnchanged = passwordText === this.currentScenario.password;
 
-            if (isWeak) {
-                feedbackText.setText('Not again!');
-                this.tweens.add({ targets: roboBob, x: '+=10', duration: 50, yoyo: true, repeat: 5 });
+            if (isUnchanged) {
+                feedbackText.setText('You need to add to the password to make it stronger!');
             } else if (isStrong) {
                 feedbackText.setText('Great job! That\'s a strong password!');
                 inputElement.setVisible(false);
@@ -109,10 +122,11 @@ class PasswordPuzzle extends Phaser.Scene {
             } else {
                 feedbackText.setText('Try making the password longer and include numbers and symbols.');
             }
-             // Add a button to reset
-            const resetButton = this.add.text(650, 550, 'Reset', { fontSize: '24px', fill: '#fff' }).setInteractive();
-            resetButton.on('pointerdown', () => this.scene.restart());
         });
+
+        // Add a button to reset
+        const resetButton = this.add.text(650, 550, 'Reset', { fontSize: '24px', fill: '#fff' }).setInteractive();
+        resetButton.on('pointerdown', () => this.scene.restart());
 
         // Clean up the HTML element when the scene is destroyed
         this.events.on('shutdown', () => {
